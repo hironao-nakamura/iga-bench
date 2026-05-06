@@ -1,0 +1,51 @@
+schema_path: schema/parquet_schema_contract.yaml
+output_root: outputs/eval_runs/prontoqa_mock
+companion_root: outputs/eval_runs/prontoqa_mock_companion
+raw_companion: true
+benchmark:
+  loader: generic_jsonl
+  benchmark_id: prontoqa_iclr50
+  benchmark_name: ProntoQA (ICLR WS bootstrap)
+  benchmark_version: iclr-ws-2026-bootstrap
+  benchmark_family: synthetic_formal
+  source_url: https://openreview.net/forum?id=qFVVBzXxR2V
+  upstream_license_status: Apache-2.0
+  input_path: examples/tiny/prontoqa_tiny.jsonl
+  split: analysis
+  release_tier: public_core
+  include_benchmark_text_in_core: false
+  supports_extension_modes: true
+  notes: mock evaluation on ProntoQA tiny.
+model:
+  provider: mock
+  model_id: mock_prontoqa
+  provider_name: mock
+  model_family: mock
+  model_name: mock-prontoqa-reasoner
+  model_snapshot: local
+  access_type: local
+  trace_mode: forced_step
+  temperature: 0.0
+  max_tokens: 1200
+  notes: Deterministic symbolic subset-test provider.
+run:
+  config_id: prontoqa_mock_v1
+  max_problems: 3
+  repetitions: 1
+  probe_bundle_id: semantic_local_surface_null_entity_v1
+  probe_types:
+  - semantic_substitution
+  - local_substitution
+  - surface_control
+  - null_probe
+  - entity_substitution
+  dependency_modes:
+  - direct
+  - transitive
+  include_extension_scope_predicate_determining: true
+  prompt_mode: forced_step
+  null_probe_enabled: true
+  self_consistency:
+    enabled: false
+    samples: 5
+    temperature: 0.7

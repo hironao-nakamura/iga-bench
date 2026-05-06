@@ -1,0 +1,7 @@
+{
+  "input_n": 50,
+  "full_eval_n": 500,
+  "dev_n": 50,
+  "holdout_n": 50,
+  "out_dir": "splits"
+}

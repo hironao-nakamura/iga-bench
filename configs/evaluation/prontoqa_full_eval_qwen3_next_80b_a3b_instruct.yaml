@@ -1,0 +1,53 @@
+benchmark:
+  benchmark_family: synthetic_formal
+  benchmark_id: prontoqa_full_eval
+  benchmark_name: ProntoQA full evaluation split
+  benchmark_version: full-eval-v1
+  include_benchmark_text_in_core: false
+  input_path: splits/prontoqa_full_eval.jsonl
+  loader: generic_jsonl
+  notes: OpenAI run on bootstrapped ProntoQA.
+  release_tier: public_core
+  source_url: https://openreview.net/forum?id=qFVVBzXxR2V
+  split: full_eval
+  supports_extension_modes: true
+  upstream_license_status: Apache-2.0
+companion_root: outputs/eval_runs/prontoqa_full_eval_qwen3_next_80b_a3b_instruct_companion
+model:
+  access_type: api
+  api_key_env: OPENAI_COMPATIBLE_API_KEY
+  max_tokens: 1200
+  model_family: openweight
+  model_id: prontoqa_full_eval_qwen3_next_80b_a3b_instruct
+  model_name: qwen/qwen3-next-80b-a3b-instruct
+  model_snapshot: null
+  notes: OpenRouter OpenAI-compatible endpoint run (Qwen3-Next-80B-A3B-Instruct).
+  provider: openai_compatible
+  provider_name: openrouter_openai_compat
+  temperature: 0.0
+  trace_mode: forced_step
+  base_url_env: OPENAI_COMPATIBLE_BASE_URL
+output_root: outputs/eval_runs/prontoqa_full_eval_qwen3_next_80b_a3b_instruct
+raw_companion: true
+run:
+  config_id: prontoqa_full_eval_qwen3_next_80b_a3b_instruct_v1
+  dependency_modes:
+  - direct
+  - transitive
+  include_extension_scope_predicate_determining: true
+  max_problems: 500
+  null_probe_enabled: true
+  probe_bundle_id: semantic_local_surface_null_entity_v1
+  probe_types:
+  - semantic_substitution
+  - local_substitution
+  - surface_control
+  - null_probe
+  - entity_substitution
+  prompt_mode: forced_step
+  repetitions: 1
+  self_consistency:
+    enabled: false
+    samples: 5
+    temperature: 0.7
+schema_path: schema/parquet_schema_contract.yaml

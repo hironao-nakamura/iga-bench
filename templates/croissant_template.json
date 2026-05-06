@@ -1,0 +1,2783 @@
+{
+  "@context": {
+    "@language": "en",
+    "@vocab": "https://schema.org/",
+    "sc": "https://schema.org/",
+    "cr": "http://mlcommons.org/croissant/",
+    "rai": "http://mlcommons.org/croissant/RAI/",
+    "dct": "http://purl.org/dc/terms/",
+    "prov": "http://www.w3.org/ns/prov#",
+    "citeAs": "cr:citeAs",
+    "column": "cr:column",
+    "conformsTo": "dct:conformsTo",
+    "containedIn": "cr:containedIn",
+    "data": {
+      "@id": "cr:data",
+      "@type": "@json"
+    },
+    "dataType": {
+      "@id": "cr:dataType",
+      "@type": "@vocab"
+    },
+    "examples": {
+      "@id": "cr:examples",
+      "@type": "@json"
+    },
+    "excludes": "cr:excludes",
+    "extract": "cr:extract",
+    "field": "cr:field",
+    "fileObject": "cr:fileObject",
+    "fileProperty": "cr:fileProperty",
+    "fileSet": "cr:fileSet",
+    "format": "cr:format",
+    "includes": "cr:includes",
+    "isLiveDataset": "cr:isLiveDataset",
+    "jsonPath": "cr:jsonPath",
+    "key": "cr:key",
+    "md5": "cr:md5",
+    "parentField": "cr:parentField",
+    "path": "cr:path",
+    "recordSet": "cr:recordSet",
+    "references": "cr:references",
+    "regex": "cr:regex",
+    "repeated": "cr:repeated",
+    "replace": "cr:replace",
+    "separator": "cr:separator",
+    "source": "cr:source",
+    "subField": "cr:subField",
+    "transform": "cr:transform",
+    "samplingRate": "cr:samplingRate"
+  },
+  "@type": "sc:Dataset",
+  "@id": "iga-bench-core-v1.1",
+  "name": "IGA-Bench Core v1.1",
+  "description": "Derived audit dataset for step-level premise dependency in LLM chain-of-thought under controlled interventions. v1.1 uses the released surface-relaxed canonicalizer as the single source of truth and reports 800 problems across ProntoQA-500 and ProofWriter-300.",
+  "url": "",
+  "version": "1.1.0",
+  "license": "https://creativecommons.org/publicdomain/zero/1.0/",
+  "creator": [
+    {
+      "@type": "Person",
+      "name": "Anonymous for review"
+    }
+  ],
+  "distribution": [
+    {
+      "@type": "cr:FileObject",
+      "@id": "core-archive",
+      "name": "IGA-Bench Core v1.1 archive",
+      "encodingFormat": "application/zip",
+      "contentUrl": "https://__HOSTED_ARCHIVE_CONTENT_URL_REQUIRED__/iga-bench-core-v1.1",
+      "description": "Primary release archive; URL/SHA/size substituted at metadata-materialization time via `iga-suite materialize-metadata --content-url --archive-sha256 --archive-size`.",
+      "sha256": "a1f67a4250dd7fa2d0cc4405cca60c09322c0532f851c136b0f92daba26ef676",
+      "contentSize": "60350343 B"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "benchmarks-files",
+      "name": "benchmarks.parquet",
+      "contentUrl": "iga-bench-core-v1.1/data/benchmarks.parquet",
+      "encodingFormat": "application/x-parquet",
+      "containedIn": {
+        "@id": "core-archive"
+      },
+      "sha256": "8d8c380c49cb644069ba3946357524086ae9d5a5b2a6b14edfba7c08dbf6daa4"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "models-files",
+      "name": "models.parquet",
+      "contentUrl": "iga-bench-core-v1.1/data/models.parquet",
+      "encodingFormat": "application/x-parquet",
+      "containedIn": {
+        "@id": "core-archive"
+      },
+      "sha256": "46692f2017778dda20b798022830d99129af65e703643f850635860c16fe6ede"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "problems-files",
+      "name": "problems.parquet",
+      "contentUrl": "iga-bench-core-v1.1/data/problems.parquet",
+      "encodingFormat": "application/x-parquet",
+      "containedIn": {
+        "@id": "core-archive"
+      },
+      "sha256": "dc033a300e427487266c17485ee20fe42be5009b1a1eea41d3c637c90a698f17"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "proof_nodes-files",
+      "name": "proof_nodes.parquet",
+      "contentUrl": "iga-bench-core-v1.1/data/proof_nodes.parquet",
+      "encodingFormat": "application/x-parquet",
+      "containedIn": {
+        "@id": "core-archive"
+      },
+      "sha256": "f8967841beed5279f441e1b08394cfddcff8e30466a8d3ee6a4715fc9f2c60cc"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "proof_edges-files",
+      "name": "proof_edges.parquet",
+      "contentUrl": "iga-bench-core-v1.1/data/proof_edges.parquet",
+      "encodingFormat": "application/x-parquet",
+      "containedIn": {
+        "@id": "core-archive"
+      },
+      "sha256": "c9671ea86788b4f24c212bb3c2464f57da746faa2e6e34fc271e51ef34b1a937"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "runs-files",
+      "name": "runs.parquet",
+      "contentUrl": "iga-bench-core-v1.1/data/runs.parquet",
+      "encodingFormat": "application/x-parquet",
+      "containedIn": {
+        "@id": "core-archive"
+      },
+      "sha256": "5c5c1b471bf5a2c4bdd2368065f8a1b1d96a8975a65b7c6d78075fecc9cd49ca"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "probes-files",
+      "name": "probes.parquet",
+      "contentUrl": "iga-bench-core-v1.1/data/probes.parquet",
+      "encodingFormat": "application/x-parquet",
+      "containedIn": {
+        "@id": "core-archive"
+      },
+      "sha256": "a12e0bb900b095aefa53a5eea4f92855212a1c07c8b5852d5f05796c2fb23ea7"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "trace_steps-files",
+      "name": "trace_steps.parquet",
+      "contentUrl": "iga-bench-core-v1.1/data/trace_steps.parquet",
+      "encodingFormat": "application/x-parquet",
+      "containedIn": {
+        "@id": "core-archive"
+      },
+      "sha256": "b46327991c5c7a5991c62f58e0296ab144172dd1da67516bd01a7856d4d37c71"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "step_alignments-files",
+      "name": "step_alignments.parquet",
+      "contentUrl": "iga-bench-core-v1.1/data/step_alignments.parquet",
+      "encodingFormat": "application/x-parquet",
+      "containedIn": {
+        "@id": "core-archive"
+      },
+      "sha256": "e41ec1e0fc5d4d5b411ea4aab6cc20b46fc9d6ba69bd7064a58059a106c6ffe5"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "audit_certificates-files",
+      "name": "audit_certificates.parquet",
+      "contentUrl": "iga-bench-core-v1.1/data/audit_certificates.parquet",
+      "encodingFormat": "application/x-parquet",
+      "containedIn": {
+        "@id": "core-archive"
+      },
+      "sha256": "5a5c72b0fc03835f93481f4ce6cf58a9ba375def8cc42c84ccdcde75a94b2924"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "run_summaries-files",
+      "name": "run_summaries.parquet",
+      "contentUrl": "iga-bench-core-v1.1/data/run_summaries.parquet",
+      "encodingFormat": "application/x-parquet",
+      "containedIn": {
+        "@id": "core-archive"
+      },
+      "sha256": "e991934297766d28f2729d741d0f8f8935e8b9ee1eaaee1b5cb647fe12af4c24"
+    },
+    {
+      "@type": "cr:FileObject",
+      "@id": "aggregate_metrics-files",
+      "name": "aggregate_metrics.parquet",
+      "contentUrl": "iga-bench-core-v1.1/data/aggregate_metrics.parquet",
+      "encodingFormat": "application/x-parquet",
+      "containedIn": {
+        "@id": "core-archive"
+      },
+      "sha256": "8ce8a2daad4b631887b0a55d00a2a6e8e5b6a2aaf982d16e92a008a73a1f1e95"
+    }
+  ],
+  "isPartOf": {
+    "@type": "CreativeWork",
+    "name": "NeurIPS 2026 Evaluations & Datasets submission"
+  },
+  "keywords": [
+    "LLM reasoning",
+    "chain-of-thought",
+    "premise dependency",
+    "evaluation",
+    "audit",
+    "benchmark"
+  ],
+  "includedInDataCatalog": {
+    "@type": "DataCatalog",
+    "name": "IGA-Bench releases"
+  },
+  "rai:dataBiases": [
+    "Upstream benchmarks (ProntoQA, ProofWriter) are synthetic or semi-synthetic, so demographic and cultural biases present in naturalistic text are largely absent.",
+    "Model selection bias: only three model families (GPT-4o, Claude Sonnet 4.6, Qwen3-Next-80B) are evaluated; conclusions may not transfer to other architectures.",
+    "Canonicalizer-sensitivity bias: coverage depends on canonicalization and alignment quality. Conservative-canonicalizer baselines can yield substantially lower coverage than the released canonicalizer; the primary release reports released-canonicalizer values, and conservative-baseline values are reported separately in sensitivity analyses."
+  ],
+  "rai:personalSensitiveInformation": "The dataset contains no personal or sensitive information. All problems are drawn from synthetic logical reasoning benchmarks with no human subjects.",
+  "rai:dataSocialImpact": "IGA-Bench is intended to improve transparency in LLM reasoning evaluation. It does not introduce new dual-use risks beyond those inherent in the upstream reasoning benchmarks.",
+  "rai:hasSyntheticData": true,
+  "prov:wasDerivedFrom": [
+    {
+      "@type": "Dataset",
+      "name": "ProntoQA",
+      "url": "https://github.com/asaparov/prontoqa",
+      "description": "Saparov & He, 2023. Formal synthetic reasoning benchmark."
+    },
+    {
+      "@type": "Dataset",
+      "name": "ProofWriter",
+      "url": "https://allenai.org/data/proofwriter",
+      "description": "Tafjord et al., 2021. Semi-formal natural language reasoning benchmark."
+    }
+  ],
+  "prov:wasGeneratedBy": {
+    "@type": "prov:Activity",
+    "name": "IGA-Bench evaluation pipeline",
+    "description": "Premise-level intervention, model re-execution, canonicalization, alignment, and certificate emission via the iga-suite executable evaluation suite."
+  },
+  "recordSet": [
+    {
+      "@type": "cr:RecordSet",
+      "@id": "benchmarks",
+      "name": "benchmarks",
+      "description": "One row per upstream benchmark family referenced by IGA-Bench.",
+      "key": [
+        {
+          "@id": "benchmarks/benchmark_id"
+        }
+      ],
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "benchmarks/benchmark_id",
+          "name": "benchmark_id",
+          "description": "Stable benchmark key, e.g. prontoqa, proofwriter.",
+          "dataType": "sc:Text",
+          "source": {
+            "extract": {
+              "column": "benchmark_id"
+            },
+            "fileObject": {
+              "@id": "benchmarks-files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "benchmarks/benchmark_name",
+          "name": "benchmark_name",
+          "description": "Human-readable benchmark name.",
+          "dataType": "sc:Text",
+          "source": {
+            "extract": {
+              "column": "benchmark_name"
+            },
+            "fileObject": {
+              "@id": "benchmarks-files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "benchmarks/benchmark_version",
+          "name": "benchmark_version",
+          "description": "Upstream benchmark version or snapshot identifier.",
+          "dataType": "sc:Text",
+          "source": {
+            "extract": {
+              "column": "benchmark_version"
+            },
+            "fileObject": {
+              "@id": "benchmarks-files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "benchmarks/benchmark_family",
+          "name": "benchmark_family",
+          "description": "formal, semi_formal, natural_language, synthetic, etc.",
+          "dataType": "sc:Text",
+          "source": {
+            "extract": {
+              "column": "benchmark_family"
+            },
+            "fileObject": {
+              "@id": "benchmarks-files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "benchmarks/source_url",
+          "name": "source_url",
+          "description": "Canonical upstream landing page or citation URL.",
+          "dataType": "sc:Text",
+          "source": {
+            "extract": {
+              "column": "source_url"
+            },
+            "fileObject": {
+              "@id": "benchmarks-files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "benchmarks/upstream_license_status",
+          "name": "upstream_license_status",
+          "description": "verified, restricted, unknown, or not_applicable.",
+          "dataType": "sc:Text",
+          "source": {
+            "extract": {
+              "column": "upstream_license_status"
+            },
+            "fileObject": {
+              "@id": "benchmarks-files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "benchmarks/text_in_core_default",
+          "name": "text_in_core_default",
+          "description": "Whether benchmark-native text is included in the core dataset by default.",
+          "dataType": "sc:Boolean",
+          "source": {
+            "extract": {
+              "column": "text_in_core_default"
+            },
+            "fileObject": {
+              "@id": "benchmarks-files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "benchmarks/gold_proof_available",
+          "name": "gold_proof_available",
+          "description": "Whether benchmark proof structure is available or derivable.",
+          "dataType": "sc:Boolean",
+          "source": {
+            "extract": {
+              "column": "gold_proof_available"
+            },
+            "fileObject": {
+              "@id": "benchmarks-files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "benchmarks/supports_extension_modes",
+          "name": "supports_extension_modes",
+          "description": "Whether benchmark-specific scoring extensions are defined.",
+          "dataType": "sc:Boolean",
+          "source": {
+            "extract": {
+              "column": "supports_extension_modes"
+            },
+            "fileObject": {
+              "@id": "benchmarks-files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "benchmarks/notes",
+          "name": "notes",
+          "description": "Suitability notes and caveats.",
+          "dataType": "sc:Text",
+          "source": {
+            "extract": {
+              "column": "notes"
+            },
+            "fileObject": {
+              "@id": "benchmarks-files"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "models",
+      "name": "models",
+      "description": "One row per evaluated model snapshot/configuration.",
+      "key": [
+        {
+          "@id": "models/model_id"
+        }
+      ],
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "models/model_id",
+          "name": "model_id",
+          "description": "Stable model key.",
+          "dataType": "sc:Text",
+          "source": {
+            "extract": {
+              "column": "model_id"
+            },
+            "fileObject": {
+              "@id": "models-files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "models/provider",
+          "name": "provider",
+          "description": "Model provider or open-weight source.",
+          "dataType": "sc:Text",
+          "source": {
+            "extract": {
+              "column": "provider"
+            },
+            "fileObject": {
+              "@id": "models-files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "models/model_family",
+          "name": "model_family",
+          "description": "Family key used in comparisons.",
+          "dataType": "sc:Text",
+          "source": {
+            "extract": {
+              "column": "model_family"
+            },
+            "fileObject": {
+              "@id": "models-files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "models/model_name",
+          "name": "model_name",
+          "description": "Public model name.",
+          "dataType": "sc:Text",
+          "source": {
+            "extract": {
+              "column": "model_name"
+            },
+            "fileObject": {
+              "@id": "models-files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "models/model_snapshot",
+          "name": "model_snapshot",
+          "description": "Version date or snapshot tag if known.",
+          "dataType": "sc:Text",
+          "source": {
+            "extract": {
+              "column": "model_snapshot"
+            },
+            "fileObject": {
+              "@id": "models-files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "models/access_type",
+          "name": "access_type",
+          "description": "api, open_weight, hosted_checkpoint, etc.",
+          "dataType": "sc:Text",
+          "source": {
+            "extract": {
+              "column": "access_type"
+            },
+            "fileObject": {
+              "@id": "models-files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "models/default_trace_mode",
+          "name": "default_trace_mode",
+          "description": "forced_step or free_form.",
+          "dataType": "sc:Text",
+          "source": {
+            "extract": {
+              "column": "default_trace_mode"
+            },
+            "fileObject": {
+              "@id": "models-files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "models/notes",
+          "name": "notes",
+          "description": "Model-specific caveats relevant to normalization or probing.",
+          "dataType": "sc:Text",
+          "source": {
+            "extract": {
+              "column": "notes"
+            },
+            "fileObject": {
+              "@id": "models-files"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "problems",
+      "name": "problems",
+      "description": "One row per problem instance referenced in the derived audit dataset.",
+      "key": [
+        {
+          "@id": "problems/dataset_problem_id"
+        }
+      ],
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "problems/dataset_problem_id",
+          "name": "dataset_problem_id",
+          "description": "Stable globally unique problem ID inside IGA-Bench.",
+          "dataType": "sc:Text",
+          "source": {
+            "extract": {
+              "column": "dataset_problem_id"
+            },
+            "fileObject": {
+              "@id": "problems-files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "problems/benchmark_id",
+          "name": "benchmark_id",
+          "description": "Foreign key to benchmarks.benchmark_id.",
+          "dataType": "sc:Text",
+          "source": {
+            "extract": {
+              "column": "benchmark_id"
+            },
+            "fileObject": {
+              "@id": "problems-files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "problems/benchmark_problem_id",
+          "name": "benchmark_problem_id",
+          "description": "Original upstream problem ID if available.",
+          "dataType": "sc:Text",
+          "source": {
+            "extract": {
+              "column": "benchmark_problem_id"
+            },
+            "fileObject": {
+              "@id": "problems-files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "problems/split",
+          "name": "split",
+          "description": "train, dev, test, analysis, stress, holdout, etc.",
+          "dataType": "sc:Text",
+          "source": {
+            "extract": {
+              "column": "split"
+            },
+            "fileObject": {
+              "@id": "problems-files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "problems/release_tier",
+          "name": "release_tier",
+          "description": "public_core or private_holdout.",
+          "dataType": "sc:Text",
+          "source": {
+            "extract": {
+              "column": "release_tier"
+            },
+            "fileObject": {
+              "@id": "problems-files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "problems/source_record_ref",
+          "name": "source_record_ref",
+          "description": "Opaque upstream record locator or import key.",
+          "dataType": "sc:Text",
+          "source": {
+            "extract": {
+              "column": "source_record_ref"
+            },
+            "fileObject": {
+              "@id": "problems-files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "problems/benchmark_text_in_core",
+          "name": "benchmark_text_in_core",
+          "description": "Whether benchmark-native problem text is included in the core release for this row.",
+          "dataType": "sc:Boolean",
+          "source": {
+            "extract": {
+              "column": "benchmark_text_in_core"
+            },
+            "fileObject": {
+              "@id": "problems-files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "problems/gold_answer",
+          "name": "gold_answer",
+          "description": "Gold final answer in benchmark-native form if releasable.",
+          "dataType": "sc:Text",
+          "source": {
+            "extract": {
+              "column": "gold_answer"
+            },
+            "fileObject": {
+              "@id": "problems-files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "problems/answer_type",
+          "name": "answer_type",
+          "description": "boolean, categorical, free_form.",
+          "dataType": "sc:Text",
+          "source": {
+            "extract": {
+              "column": "answer_type"
+            },
+            "fileObject": {
+              "@id": "problems-files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "problems/num_premises",
+          "name": "num_premises",
+          "description": "Number of input premises.",
+          "dataType": "sc:Integer",
+          "source": {
+            "extract": {
+              "column": "num_premises"
+            },
+            "fileObject": {
+              "@id": "problems-files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "problems/num_gold_steps",
+          "name": "num_gold_steps",
+          "description": "Number of gold intermediate steps if defined.",
+          "dataType": "sc:Integer",
+          "source": {
+            "extract": {
+              "column": "num_gold_steps"
+            },
+            "fileObject": {
+              "@id": "problems-files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "problems/max_gold_depth",
+          "name": "max_gold_depth",
+          "description": "Longest proof depth among valid proofs.",
+          "dataType": "sc:Integer",
+          "source": {
+            "extract": {
+              "column": "max_gold_depth"
+            },
+            "fileObject": {
+              "@id": "problems-files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "problems/difficulty_bin",
+          "name": "difficulty_bin",
+          "description": "Benchmark-specific difficulty bucket.",
+          "dataType": "sc:Text",
+          "source": {
+            "extract": {
+              "column": "difficulty_bin"
+            },
+            "fileObject": {
+              "@id": "problems-files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "problems/source_hash",
+          "name": "source_hash",
+          "description": "Hash of the canonical source record or import payload.",
+          "dataType": "sc:Text",
+          "source": {
+            "extract": {
+              "column": "source_hash"
+            },
+            "fileObject": {
+              "@id": "problems-files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "problems/notes",
+          "name": "notes",
+          "description": "Free-text notes.",
+          "dataType": "sc:Text",
+          "source": {
+            "extract": {
+              "column": "notes"
+            },
+            "fileObject": {
+              "@id": "problems-files"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "proof_nodes",
+      "name": "proof_nodes",
+      "description": "Node list for one or more proof graphs per problem, expressed in canonical audit form.",
+      "key": [
+        {
+          "@id": "proof_nodes/proof_node_id"
+        }
+      ],
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "proof_nodes/proof_node_id",
+          "name": "proof_node_id",
+          "description": "Stable globally unique proof node ID.",
+          "dataType": "sc:Text",
+          "source": {
+            "extract": {
+              "column": "proof_node_id"
+            },
+            "fileObject": {
+              "@id": "proof_nodes-files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "proof_nodes/dataset_problem_id",
+          "name": "dataset_problem_id",
+          "description": "Foreign key to problems.dataset_problem_id.",
+          "dataType": "sc:Text",
+          "source": {
+            "extract": {
+              "column": "dataset_problem_id"
+            },
+            "fileObject": {
+              "@id": "proof_nodes-files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "proof_nodes/proof_graph_id",
+          "name": "proof_graph_id",
+          "description": "Valid-proof graph ID; multiple graphs allowed per problem.",
+          "dataType": "sc:Text",
+          "source": {
+            "extract": {
+              "column": "proof_graph_id"
+            },
+            "fileObject": {
+              "@id": "proof_nodes-files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "proof_nodes/node_role",
+          "name": "node_role",
+          "description": "premise, intermediate_step, final_answer.",
+          "dataType": "sc:Text",
+          "source": {
+            "extract": {
+              "column": "node_role"
+            },
+            "fileObject": {
+              "@id": "proof_nodes-files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "proof_nodes/node_index",
+          "name": "node_index",
+          "description": "Canonical within-graph order for display.",
+          "dataType": "sc:Integer",
+          "source": {
+            "extract": {
+              "column": "node_index"
+            },
+            "fileObject": {
+              "@id": "proof_nodes-files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "proof_nodes/source_node_ref",
+          "name": "source_node_ref",
+          "description": "Opaque reference back to the benchmark-native node text.",
+          "dataType": "sc:Text",
+          "source": {
+            "extract": {
+              "column": "source_node_ref"
+            },
+            "fileObject": {
+              "@id": "proof_nodes-files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "proof_nodes/canonical_form",
+          "name": "canonical_form",
+          "description": "Canonical proposition form if available.",
+          "dataType": "sc:Text",
+          "source": {
+            "extract": {
+              "column": "canonical_form"
+            },
+            "fileObject": {
+              "@id": "proof_nodes-files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "proof_nodes/canonical_type",
+          "name": "canonical_type",
+          "description": "is, subtype, break, free_form, etc.",
+          "dataType": "sc:Text",
+          "source": {
+            "extract": {
+              "column": "canonical_type"
+            },
+            "fileObject": {
+              "@id": "proof_nodes-files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "proof_nodes/extension_group",
+          "name": "extension_group",
+          "description": "Identifier for alternate-proof or benchmark-specific grouping.",
+          "dataType": "sc:Text",
+          "source": {
+            "extract": {
+              "column": "extension_group"
+            },
+            "fileObject": {
+              "@id": "proof_nodes-files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "proof_nodes/notes",
+          "name": "notes",
+          "description": "Optional annotation notes.",
+          "dataType": "sc:Text",
+          "source": {
+            "extract": {
+              "column": "notes"
+            },
+            "fileObject": {
+              "@id": "proof_nodes-files"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "proof_edges",
+      "name": "proof_edges",
+      "description": "Direct dependency edges inside valid proof graphs. Transitive relations are derived, not stored as primary edges.",
+      "key": [
+        {
+          "@id": "proof_edges/proof_edge_id"
+        }
+      ],
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "proof_edges/proof_edge_id",
+          "name": "proof_edge_id",
+          "description": "Stable edge ID.",
+          "dataType": "sc:Text",
+          "source": {
+            "extract": {
+              "column": "proof_edge_id"
+            },
+            "fileObject": {
+              "@id": "proof_edges-files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "proof_edges/dataset_problem_id",
+          "name": "dataset_problem_id",
+          "description": "Foreign key to problems.dataset_problem_id.",
+          "dataType": "sc:Text",
+          "source": {
+            "extract": {
+              "column": "dataset_problem_id"
+            },
+            "fileObject": {
+              "@id": "proof_edges-files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "proof_edges/proof_graph_id",
+          "name": "proof_graph_id",
+          "description": "Foreign key to proof graph instance.",
+          "dataType": "sc:Text",
+          "source": {
+            "extract": {
+              "column": "proof_graph_id"
+            },
+            "fileObject": {
+              "@id": "proof_edges-files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "proof_edges/src_proof_node_id",
+          "name": "src_proof_node_id",
+          "description": "Source node ID.",
+          "dataType": "sc:Text",
+          "source": {
+            "extract": {
+              "column": "src_proof_node_id"
+            },
+            "fileObject": {
+              "@id": "proof_edges-files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "proof_edges/dst_proof_node_id",
+          "name": "dst_proof_node_id",
+          "description": "Destination node ID.",
+          "dataType": "sc:Text",
+          "source": {
+            "extract": {
+              "column": "dst_proof_node_id"
+            },
+            "fileObject": {
+              "@id": "proof_edges-files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "proof_edges/edge_role",
+          "name": "edge_role",
+          "description": "direct_dependency or benchmark_specific_extension_edge.",
+          "dataType": "sc:Text",
+          "source": {
+            "extract": {
+              "column": "edge_role"
+            },
+            "fileObject": {
+              "@id": "proof_edges-files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "proof_edges/notes",
+          "name": "notes",
+          "description": "Optional notes.",
+          "dataType": "sc:Text",
+          "source": {
+            "extract": {
+              "column": "notes"
+            },
+            "fileObject": {
+              "@id": "proof_edges-files"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "runs",
+      "name": "runs",
+      "description": "One row per model execution.",
+      "key": [
+        {
+          "@id": "runs/run_id"
+        }
+      ],
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "runs/run_id",
+          "name": "run_id",
+          "description": "Stable run identifier.",
+          "dataType": "sc:Text",
+          "source": {
+            "extract": {
+              "column": "run_id"
+            },
+            "fileObject": {
+              "@id": "runs-files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "runs/dataset_problem_id",
+          "name": "dataset_problem_id",
+          "description": "Foreign key to problems.dataset_problem_id.",
+          "dataType": "sc:Text",
+          "source": {
+            "extract": {
+              "column": "dataset_problem_id"
+            },
+            "fileObject": {
+              "@id": "runs-files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "runs/model_id",
+          "name": "model_id",
+          "description": "Foreign key to models.model_id.",
+          "dataType": "sc:Text",
+          "source": {
+            "extract": {
+              "column": "model_id"
+            },
+            "fileObject": {
+              "@id": "runs-files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "runs/model_family",
+          "name": "model_family",
+          "description": "Denormalized family key for partitioning.",
+          "dataType": "sc:Text",
+          "source": {
+            "extract": {
+              "column": "model_family"
+            },
+            "fileObject": {
+              "@id": "runs-files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "runs/config_id",
+          "name": "config_id",
+          "description": "Prompting / decoding configuration key.",
+          "dataType": "sc:Text",
+          "source": {
+            "extract": {
+              "column": "config_id"
+            },
+            "fileObject": {
+              "@id": "runs-files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "runs/trace_mode",
+          "name": "trace_mode",
+          "description": "forced_step or free_form.",
+          "dataType": "sc:Text",
+          "source": {
+            "extract": {
+              "column": "trace_mode"
+            },
+            "fileObject": {
+              "@id": "runs-files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "runs/probe_bundle_id",
+          "name": "probe_bundle_id",
+          "description": "Identifier for the probe set used.",
+          "dataType": "sc:Text",
+          "source": {
+            "extract": {
+              "column": "probe_bundle_id"
+            },
+            "fileObject": {
+              "@id": "runs-files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "runs/repetition_index",
+          "name": "repetition_index",
+          "description": "Repeat index within a repeated-run protocol.",
+          "dataType": "sc:Integer",
+          "source": {
+            "extract": {
+              "column": "repetition_index"
+            },
+            "fileObject": {
+              "@id": "runs-files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "runs/source_response_ref",
+          "name": "source_response_ref",
+          "description": "Opaque reference to raw response in companion artifact or secure store.",
+          "dataType": "sc:Text",
+          "source": {
+            "extract": {
+              "column": "source_response_ref"
+            },
+            "fileObject": {
+              "@id": "runs-files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "runs/raw_output_in_companion",
+          "name": "raw_output_in_companion",
+          "description": "Whether the verbatim output exists outside the core dataset.",
+          "dataType": "sc:Boolean",
+          "source": {
+            "extract": {
+              "column": "raw_output_in_companion"
+            },
+            "fileObject": {
+              "@id": "runs-files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "runs/final_answer",
+          "name": "final_answer",
+          "description": "Final answer extracted from the run if available.",
+          "dataType": "sc:Text",
+          "source": {
+            "extract": {
+              "column": "final_answer"
+            },
+            "fileObject": {
+              "@id": "runs-files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "runs/final_answer_correct",
+          "name": "final_answer_correct",
+          "description": "Whether the final answer is correct under benchmark scoring.",
+          "dataType": "sc:Boolean",
+          "source": {
+            "extract": {
+              "column": "final_answer_correct"
+            },
+            "fileObject": {
+              "@id": "runs-files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "runs/notes",
+          "name": "notes",
+          "description": "Optional notes.",
+          "dataType": "sc:Text",
+          "source": {
+            "extract": {
+              "column": "notes"
+            },
+            "fileObject": {
+              "@id": "runs-files"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "probes",
+      "name": "probes",
+      "description": "One row per generated intervention probe specification.",
+      "key": [
+        {
+          "@id": "probes/probe_id"
+        }
+      ],
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "probes/probe_id",
+          "name": "probe_id",
+          "description": "Stable probe identifier.",
+          "dataType": "sc:Text",
+          "source": {
+            "extract": {
+              "column": "probe_id"
+            },
+            "fileObject": {
+              "@id": "probes-files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "probes/dataset_problem_id",
+          "name": "dataset_problem_id",
+          "description": "Foreign key to problems.dataset_problem_id.",
+          "dataType": "sc:Text",
+          "source": {
+            "extract": {
+              "column": "dataset_problem_id"
+            },
+            "fileObject": {
+              "@id": "probes-files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "probes/target_premise_ref",
+          "name": "target_premise_ref",
+          "description": "Reference to the target premise node or upstream premise key.",
+          "dataType": "sc:Text",
+          "source": {
+            "extract": {
+              "column": "target_premise_ref"
+            },
+            "fileObject": {
+              "@id": "probes-files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "probes/probe_type",
+          "name": "probe_type",
+          "description": "semantic_substitution, local_substitution, surface_control, null_probe, etc.",
+          "dataType": "sc:Text",
+          "source": {
+            "extract": {
+              "column": "probe_type"
+            },
+            "fileObject": {
+              "@id": "probes-files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "probes/intervention_scope",
+          "name": "intervention_scope",
+          "description": "consistent, local, global, control.",
+          "dataType": "sc:Text",
+          "source": {
+            "extract": {
+              "column": "intervention_scope"
+            },
+            "fileObject": {
+              "@id": "probes-files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "probes/render_rule_id",
+          "name": "render_rule_id",
+          "description": "Transformation rule identifier.",
+          "dataType": "sc:Text",
+          "source": {
+            "extract": {
+              "column": "render_rule_id"
+            },
+            "fileObject": {
+              "@id": "probes-files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "probes/rendered_probe_in_companion",
+          "name": "rendered_probe_in_companion",
+          "description": "Whether full rendered probe text exists outside the core dataset.",
+          "dataType": "sc:Boolean",
+          "source": {
+            "extract": {
+              "column": "rendered_probe_in_companion"
+            },
+            "fileObject": {
+              "@id": "probes-files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "probes/semantic_target_ref",
+          "name": "semantic_target_ref",
+          "description": "Which predicate/entity/relation was targeted.",
+          "dataType": "sc:Text",
+          "source": {
+            "extract": {
+              "column": "semantic_target_ref"
+            },
+            "fileObject": {
+              "@id": "probes-files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "probes/notes",
+          "name": "notes",
+          "description": "Optional notes.",
+          "dataType": "sc:Text",
+          "source": {
+            "extract": {
+              "column": "notes"
+            },
+            "fileObject": {
+              "@id": "probes-files"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "trace_steps",
+      "name": "trace_steps",
+      "description": "Canonicalized step annotations for each run. Verbatim step text is referenced rather than required in core.",
+      "key": [
+        {
+          "@id": "trace_steps/trace_step_id"
+        }
+      ],
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "trace_steps/trace_step_id",
+          "name": "trace_step_id",
+          "description": "Stable step identifier.",
+          "dataType": "sc:Text",
+          "source": {
+            "extract": {
+              "column": "trace_step_id"
+            },
+            "fileObject": {
+              "@id": "trace_steps-files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "trace_steps/run_id",
+          "name": "run_id",
+          "description": "Foreign key to runs.run_id.",
+          "dataType": "sc:Text",
+          "source": {
+            "extract": {
+              "column": "run_id"
+            },
+            "fileObject": {
+              "@id": "trace_steps-files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "trace_steps/step_index",
+          "name": "step_index",
+          "description": "1-indexed step number in the emitted trace.",
+          "dataType": "sc:Integer",
+          "source": {
+            "extract": {
+              "column": "step_index"
+            },
+            "fileObject": {
+              "@id": "trace_steps-files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "trace_steps/raw_step_ref",
+          "name": "raw_step_ref",
+          "description": "Opaque reference to the verbatim step text in companion storage.",
+          "dataType": "sc:Text",
+          "source": {
+            "extract": {
+              "column": "raw_step_ref"
+            },
+            "fileObject": {
+              "@id": "trace_steps-files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "trace_steps/raw_step_sha256",
+          "name": "raw_step_sha256",
+          "description": "Hash of the verbatim step text if available.",
+          "dataType": "sc:Text",
+          "source": {
+            "extract": {
+              "column": "raw_step_sha256"
+            },
+            "fileObject": {
+              "@id": "trace_steps-files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "trace_steps/parse_status",
+          "name": "parse_status",
+          "description": "OK, UNPARSEABLE, BREAK_TOKENIZED, etc.",
+          "dataType": "sc:Text",
+          "source": {
+            "extract": {
+              "column": "parse_status"
+            },
+            "fileObject": {
+              "@id": "trace_steps-files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "trace_steps/canonical_form",
+          "name": "canonical_form",
+          "description": "Canonical proposition or canonical break token.",
+          "dataType": "sc:Text",
+          "source": {
+            "extract": {
+              "column": "canonical_form"
+            },
+            "fileObject": {
+              "@id": "trace_steps-files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "trace_steps/canonical_type",
+          "name": "canonical_type",
+          "description": "is, subtype, break, free_form, etc.",
+          "dataType": "sc:Text",
+          "source": {
+            "extract": {
+              "column": "canonical_type"
+            },
+            "fileObject": {
+              "@id": "trace_steps-files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "trace_steps/emits_break_token",
+          "name": "emits_break_token",
+          "description": "Whether canonicalization produced a break/meta token.",
+          "dataType": "sc:Boolean",
+          "source": {
+            "extract": {
+              "column": "emits_break_token"
+            },
+            "fileObject": {
+              "@id": "trace_steps-files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "trace_steps/break_token_type",
+          "name": "break_token_type",
+          "description": "Reason category for break/meta token if emitted.",
+          "dataType": "sc:Text",
+          "source": {
+            "extract": {
+              "column": "break_token_type"
+            },
+            "fileObject": {
+              "@id": "trace_steps-files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "trace_steps/notes",
+          "name": "notes",
+          "description": "Optional notes.",
+          "dataType": "sc:Text",
+          "source": {
+            "extract": {
+              "column": "notes"
+            },
+            "fileObject": {
+              "@id": "trace_steps-files"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "step_alignments",
+      "name": "step_alignments",
+      "description": "Alignment records between original and probed traces.",
+      "key": [
+        {
+          "@id": "step_alignments/alignment_id"
+        }
+      ],
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "step_alignments/alignment_id",
+          "name": "alignment_id",
+          "description": "Stable alignment identifier.",
+          "dataType": "sc:Text",
+          "source": {
+            "extract": {
+              "column": "alignment_id"
+            },
+            "fileObject": {
+              "@id": "step_alignments-files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "step_alignments/dataset_problem_id",
+          "name": "dataset_problem_id",
+          "description": "Foreign key to problems.dataset_problem_id.",
+          "dataType": "sc:Text",
+          "source": {
+            "extract": {
+              "column": "dataset_problem_id"
+            },
+            "fileObject": {
+              "@id": "step_alignments-files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "step_alignments/original_run_id",
+          "name": "original_run_id",
+          "description": "Original run identifier.",
+          "dataType": "sc:Text",
+          "source": {
+            "extract": {
+              "column": "original_run_id"
+            },
+            "fileObject": {
+              "@id": "step_alignments-files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "step_alignments/probed_run_id",
+          "name": "probed_run_id",
+          "description": "Probe run identifier.",
+          "dataType": "sc:Text",
+          "source": {
+            "extract": {
+              "column": "probed_run_id"
+            },
+            "fileObject": {
+              "@id": "step_alignments-files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "step_alignments/original_trace_step_id",
+          "name": "original_trace_step_id",
+          "description": "Aligned original step.",
+          "dataType": "sc:Text",
+          "source": {
+            "extract": {
+              "column": "original_trace_step_id"
+            },
+            "fileObject": {
+              "@id": "step_alignments-files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "step_alignments/probed_trace_step_id",
+          "name": "probed_trace_step_id",
+          "description": "Aligned probed step.",
+          "dataType": "sc:Text",
+          "source": {
+            "extract": {
+              "column": "probed_trace_step_id"
+            },
+            "fileObject": {
+              "@id": "step_alignments-files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "step_alignments/alignment_status",
+          "name": "alignment_status",
+          "description": "MATCHED, MISSING, EXTRA, UNSURE.",
+          "dataType": "sc:Text",
+          "source": {
+            "extract": {
+              "column": "alignment_status"
+            },
+            "fileObject": {
+              "@id": "step_alignments-files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "step_alignments/alignment_method",
+          "name": "alignment_method",
+          "description": "step_id, canonical_match, hybrid, etc.",
+          "dataType": "sc:Text",
+          "source": {
+            "extract": {
+              "column": "alignment_method"
+            },
+            "fileObject": {
+              "@id": "step_alignments-files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "step_alignments/alignment_confidence",
+          "name": "alignment_confidence",
+          "description": "Numeric confidence if produced.",
+          "dataType": "sc:Float",
+          "source": {
+            "extract": {
+              "column": "alignment_confidence"
+            },
+            "fileObject": {
+              "@id": "step_alignments-files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "step_alignments/notes",
+          "name": "notes",
+          "description": "Optional notes.",
+          "dataType": "sc:Text",
+          "source": {
+            "extract": {
+              "column": "notes"
+            },
+            "fileObject": {
+              "@id": "step_alignments-files"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "audit_certificates",
+      "name": "audit_certificates",
+      "description": "The primary analytic table: one row per audited (step, premise, probe configuration) pair.",
+      "key": [
+        {
+          "@id": "audit_certificates/certificate_id"
+        }
+      ],
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "audit_certificates/certificate_id",
+          "name": "certificate_id",
+          "description": "Stable certificate identifier.",
+          "dataType": "sc:Text",
+          "source": {
+            "extract": {
+              "column": "certificate_id"
+            },
+            "fileObject": {
+              "@id": "audit_certificates-files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "audit_certificates/dataset_problem_id",
+          "name": "dataset_problem_id",
+          "description": "Foreign key to problems.dataset_problem_id.",
+          "dataType": "sc:Text",
+          "source": {
+            "extract": {
+              "column": "dataset_problem_id"
+            },
+            "fileObject": {
+              "@id": "audit_certificates-files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "audit_certificates/model_id",
+          "name": "model_id",
+          "description": "Foreign key to models.model_id.",
+          "dataType": "sc:Text",
+          "source": {
+            "extract": {
+              "column": "model_id"
+            },
+            "fileObject": {
+              "@id": "audit_certificates-files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "audit_certificates/model_family",
+          "name": "model_family",
+          "description": "Denormalized family key for partitioning.",
+          "dataType": "sc:Text",
+          "source": {
+            "extract": {
+              "column": "model_family"
+            },
+            "fileObject": {
+              "@id": "audit_certificates-files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "audit_certificates/config_id",
+          "name": "config_id",
+          "description": "Evaluation configuration key.",
+          "dataType": "sc:Text",
+          "source": {
+            "extract": {
+              "column": "config_id"
+            },
+            "fileObject": {
+              "@id": "audit_certificates-files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "audit_certificates/dependency_mode_scored",
+          "name": "dependency_mode_scored",
+          "description": "direct, transitive, or named benchmark-specific extension.",
+          "dataType": "sc:Text",
+          "source": {
+            "extract": {
+              "column": "dependency_mode_scored"
+            },
+            "fileObject": {
+              "@id": "audit_certificates-files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "audit_certificates/probe_id",
+          "name": "probe_id",
+          "description": "Foreign key to probes.probe_id.",
+          "dataType": "sc:Text",
+          "source": {
+            "extract": {
+              "column": "probe_id"
+            },
+            "fileObject": {
+              "@id": "audit_certificates-files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "audit_certificates/target_premise_ref",
+          "name": "target_premise_ref",
+          "description": "Target premise reference.",
+          "dataType": "sc:Text",
+          "source": {
+            "extract": {
+              "column": "target_premise_ref"
+            },
+            "fileObject": {
+              "@id": "audit_certificates-files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "audit_certificates/original_run_id",
+          "name": "original_run_id",
+          "description": "Original run identifier.",
+          "dataType": "sc:Text",
+          "source": {
+            "extract": {
+              "column": "original_run_id"
+            },
+            "fileObject": {
+              "@id": "audit_certificates-files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "audit_certificates/probed_run_id",
+          "name": "probed_run_id",
+          "description": "Probe run identifier.",
+          "dataType": "sc:Text",
+          "source": {
+            "extract": {
+              "column": "probed_run_id"
+            },
+            "fileObject": {
+              "@id": "audit_certificates-files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "audit_certificates/original_trace_step_id",
+          "name": "original_trace_step_id",
+          "description": "Aligned original step identifier.",
+          "dataType": "sc:Text",
+          "source": {
+            "extract": {
+              "column": "original_trace_step_id"
+            },
+            "fileObject": {
+              "@id": "audit_certificates-files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "audit_certificates/probed_trace_step_id",
+          "name": "probed_trace_step_id",
+          "description": "Aligned probed step identifier.",
+          "dataType": "sc:Text",
+          "source": {
+            "extract": {
+              "column": "probed_trace_step_id"
+            },
+            "fileObject": {
+              "@id": "audit_certificates-files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "audit_certificates/probe_type",
+          "name": "probe_type",
+          "description": "semantic_substitution, local_substitution, surface_control, null_probe, etc.",
+          "dataType": "sc:Text",
+          "source": {
+            "extract": {
+              "column": "probe_type"
+            },
+            "fileObject": {
+              "@id": "audit_certificates-files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "audit_certificates/verdict_type",
+          "name": "verdict_type",
+          "description": "GROUNDED, INSENSITIVE, INPUT_SENSITIVE, UNSTABLE, UNPARSEABLE, BREAK_GROUNDED, etc.",
+          "dataType": "sc:Text",
+          "source": {
+            "extract": {
+              "column": "verdict_type"
+            },
+            "fileObject": {
+              "@id": "audit_certificates-files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "audit_certificates/explicit_premise_citation",
+          "name": "explicit_premise_citation",
+          "description": "Whether the step explicitly cites the target premise.",
+          "dataType": "sc:Boolean",
+          "source": {
+            "extract": {
+              "column": "explicit_premise_citation"
+            },
+            "fileObject": {
+              "@id": "audit_certificates-files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "audit_certificates/semantic_changed",
+          "name": "semantic_changed",
+          "description": "Whether the canonicalized conclusion changed under semantic intervention.",
+          "dataType": "sc:Boolean",
+          "source": {
+            "extract": {
+              "column": "semantic_changed"
+            },
+            "fileObject": {
+              "@id": "audit_certificates-files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "audit_certificates/control_changed",
+          "name": "control_changed",
+          "description": "Whether the canonicalized conclusion changed under control intervention.",
+          "dataType": "sc:Boolean",
+          "source": {
+            "extract": {
+              "column": "control_changed"
+            },
+            "fileObject": {
+              "@id": "audit_certificates-files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "audit_certificates/parse_ok",
+          "name": "parse_ok",
+          "description": "Whether the relevant steps were parseable into the canonical representation.",
+          "dataType": "sc:Boolean",
+          "source": {
+            "extract": {
+              "column": "parse_ok"
+            },
+            "fileObject": {
+              "@id": "audit_certificates-files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "audit_certificates/alignment_ok",
+          "name": "alignment_ok",
+          "description": "Whether step alignment was definitive.",
+          "dataType": "sc:Boolean",
+          "source": {
+            "extract": {
+              "column": "alignment_ok"
+            },
+            "fileObject": {
+              "@id": "audit_certificates-files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "audit_certificates/gold_dependency_label",
+          "name": "gold_dependency_label",
+          "description": "positive, negative, unresolved under the scored dependency mode.",
+          "dataType": "sc:Text",
+          "source": {
+            "extract": {
+              "column": "gold_dependency_label"
+            },
+            "fileObject": {
+              "@id": "audit_certificates-files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "audit_certificates/unresolved_reason",
+          "name": "unresolved_reason",
+          "description": "parse_failure, alignment_failure, unsupported_extension, etc.",
+          "dataType": "sc:Text",
+          "source": {
+            "extract": {
+              "column": "unresolved_reason"
+            },
+            "fileObject": {
+              "@id": "audit_certificates-files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "audit_certificates/canonical_original",
+          "name": "canonical_original",
+          "description": "Canonical form of the original aligned step.",
+          "dataType": "sc:Text",
+          "source": {
+            "extract": {
+              "column": "canonical_original"
+            },
+            "fileObject": {
+              "@id": "audit_certificates-files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "audit_certificates/canonical_probed",
+          "name": "canonical_probed",
+          "description": "Canonical form of the probed aligned step.",
+          "dataType": "sc:Text",
+          "source": {
+            "extract": {
+              "column": "canonical_probed"
+            },
+            "fileObject": {
+              "@id": "audit_certificates-files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "audit_certificates/certificate_sha256",
+          "name": "certificate_sha256",
+          "description": "Hash of the certificate payload.",
+          "dataType": "sc:Text",
+          "source": {
+            "extract": {
+              "column": "certificate_sha256"
+            },
+            "fileObject": {
+              "@id": "audit_certificates-files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "audit_certificates/notes",
+          "name": "notes",
+          "description": "Optional notes.",
+          "dataType": "sc:Text",
+          "source": {
+            "extract": {
+              "column": "notes"
+            },
+            "fileObject": {
+              "@id": "audit_certificates-files"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "run_summaries",
+      "name": "run_summaries",
+      "description": "Problem-level summaries derived from audit certificates and final answers.",
+      "key": [
+        {
+          "@id": "run_summaries/summary_id"
+        }
+      ],
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "run_summaries/summary_id",
+          "name": "summary_id",
+          "description": "Stable summary identifier.",
+          "dataType": "sc:Text",
+          "source": {
+            "extract": {
+              "column": "summary_id"
+            },
+            "fileObject": {
+              "@id": "run_summaries-files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "run_summaries/dataset_problem_id",
+          "name": "dataset_problem_id",
+          "description": "Foreign key to problems.dataset_problem_id.",
+          "dataType": "sc:Text",
+          "source": {
+            "extract": {
+              "column": "dataset_problem_id"
+            },
+            "fileObject": {
+              "@id": "run_summaries-files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "run_summaries/model_id",
+          "name": "model_id",
+          "description": "Foreign key to models.model_id.",
+          "dataType": "sc:Text",
+          "source": {
+            "extract": {
+              "column": "model_id"
+            },
+            "fileObject": {
+              "@id": "run_summaries-files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "run_summaries/model_family",
+          "name": "model_family",
+          "description": "Denormalized family key.",
+          "dataType": "sc:Text",
+          "source": {
+            "extract": {
+              "column": "model_family"
+            },
+            "fileObject": {
+              "@id": "run_summaries-files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "run_summaries/config_id",
+          "name": "config_id",
+          "description": "Evaluation configuration key.",
+          "dataType": "sc:Text",
+          "source": {
+            "extract": {
+              "column": "config_id"
+            },
+            "fileObject": {
+              "@id": "run_summaries-files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "run_summaries/final_answer_correct",
+          "name": "final_answer_correct",
+          "description": "Whether the final answer was correct.",
+          "dataType": "sc:Boolean",
+          "source": {
+            "extract": {
+              "column": "final_answer_correct"
+            },
+            "fileObject": {
+              "@id": "run_summaries-files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "run_summaries/rawr_direct",
+          "name": "rawr_direct",
+          "description": "RAWR under direct scoring.",
+          "dataType": "sc:Boolean",
+          "source": {
+            "extract": {
+              "column": "rawr_direct"
+            },
+            "fileObject": {
+              "@id": "run_summaries-files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "run_summaries/rawr_transitive",
+          "name": "rawr_transitive",
+          "description": "RAWR under transitive scoring.",
+          "dataType": "sc:Boolean",
+          "source": {
+            "extract": {
+              "column": "rawr_transitive"
+            },
+            "fileObject": {
+              "@id": "run_summaries-files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "run_summaries/definitive_coverage",
+          "name": "definitive_coverage",
+          "description": "Fraction of certificates for this run with definitive verdicts.",
+          "dataType": "sc:Float",
+          "source": {
+            "extract": {
+              "column": "definitive_coverage"
+            },
+            "fileObject": {
+              "@id": "run_summaries-files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "run_summaries/parse_coverage",
+          "name": "parse_coverage",
+          "description": "Fraction of relevant steps parseable for this run.",
+          "dataType": "sc:Float",
+          "source": {
+            "extract": {
+              "column": "parse_coverage"
+            },
+            "fileObject": {
+              "@id": "run_summaries-files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "run_summaries/alignment_coverage",
+          "name": "alignment_coverage",
+          "description": "Fraction of relevant alignments successful for this run.",
+          "dataType": "sc:Float",
+          "source": {
+            "extract": {
+              "column": "alignment_coverage"
+            },
+            "fileObject": {
+              "@id": "run_summaries-files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "run_summaries/num_certificates",
+          "name": "num_certificates",
+          "description": "Number of emitted certificates.",
+          "dataType": "sc:Integer",
+          "source": {
+            "extract": {
+              "column": "num_certificates"
+            },
+            "fileObject": {
+              "@id": "run_summaries-files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "run_summaries/num_unparseable",
+          "name": "num_unparseable",
+          "description": "Number of UNPARSEABLE certificates.",
+          "dataType": "sc:Integer",
+          "source": {
+            "extract": {
+              "column": "num_unparseable"
+            },
+            "fileObject": {
+              "@id": "run_summaries-files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "run_summaries/num_misrepresentation",
+          "name": "num_misrepresentation",
+          "description": "Number of misrepresentation cases under the chosen policy.",
+          "dataType": "sc:Integer",
+          "source": {
+            "extract": {
+              "column": "num_misrepresentation"
+            },
+            "fileObject": {
+              "@id": "run_summaries-files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "run_summaries/notes",
+          "name": "notes",
+          "description": "Optional notes.",
+          "dataType": "sc:Text",
+          "source": {
+            "extract": {
+              "column": "notes"
+            },
+            "fileObject": {
+              "@id": "run_summaries-files"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "@type": "cr:RecordSet",
+      "@id": "aggregate_metrics",
+      "name": "aggregate_metrics",
+      "description": "Aggregated benchmark/model/configuration metrics released with the dataset.",
+      "key": [
+        {
+          "@id": "aggregate_metrics/metric_id"
+        }
+      ],
+      "field": [
+        {
+          "@type": "cr:Field",
+          "@id": "aggregate_metrics/metric_id",
+          "name": "metric_id",
+          "description": "Stable metric row identifier.",
+          "dataType": "sc:Text",
+          "source": {
+            "extract": {
+              "column": "metric_id"
+            },
+            "fileObject": {
+              "@id": "aggregate_metrics-files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "aggregate_metrics/benchmark_id",
+          "name": "benchmark_id",
+          "description": "Benchmark key.",
+          "dataType": "sc:Text",
+          "source": {
+            "extract": {
+              "column": "benchmark_id"
+            },
+            "fileObject": {
+              "@id": "aggregate_metrics-files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "aggregate_metrics/split",
+          "name": "split",
+          "description": "Split key.",
+          "dataType": "sc:Text",
+          "source": {
+            "extract": {
+              "column": "split"
+            },
+            "fileObject": {
+              "@id": "aggregate_metrics-files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "aggregate_metrics/model_family",
+          "name": "model_family",
+          "description": "Model family.",
+          "dataType": "sc:Text",
+          "source": {
+            "extract": {
+              "column": "model_family"
+            },
+            "fileObject": {
+              "@id": "aggregate_metrics-files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "aggregate_metrics/model_id",
+          "name": "model_id",
+          "description": "Specific model if metrics are model-specific.",
+          "dataType": "sc:Text",
+          "source": {
+            "extract": {
+              "column": "model_id"
+            },
+            "fileObject": {
+              "@id": "aggregate_metrics-files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "aggregate_metrics/config_id",
+          "name": "config_id",
+          "description": "Evaluation configuration key.",
+          "dataType": "sc:Text",
+          "source": {
+            "extract": {
+              "column": "config_id"
+            },
+            "fileObject": {
+              "@id": "aggregate_metrics-files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "aggregate_metrics/dependency_mode",
+          "name": "dependency_mode",
+          "description": "direct, transitive, or benchmark-specific extension.",
+          "dataType": "sc:Text",
+          "source": {
+            "extract": {
+              "column": "dependency_mode"
+            },
+            "fileObject": {
+              "@id": "aggregate_metrics-files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "aggregate_metrics/metric_scope",
+          "name": "metric_scope",
+          "description": "all, predicate_determining, benchmark_specific_extension, etc.",
+          "dataType": "sc:Text",
+          "source": {
+            "extract": {
+              "column": "metric_scope"
+            },
+            "fileObject": {
+              "@id": "aggregate_metrics-files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "aggregate_metrics/baseline_name",
+          "name": "baseline_name",
+          "description": "If this row is a baseline comparison, its name.",
+          "dataType": "sc:Text",
+          "source": {
+            "extract": {
+              "column": "baseline_name"
+            },
+            "fileObject": {
+              "@id": "aggregate_metrics-files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "aggregate_metrics/voting_k",
+          "name": "voting_k",
+          "description": "Repeat-run majority vote count if applicable.",
+          "dataType": "sc:Integer",
+          "source": {
+            "extract": {
+              "column": "voting_k"
+            },
+            "fileObject": {
+              "@id": "aggregate_metrics-files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "aggregate_metrics/num_problems",
+          "name": "num_problems",
+          "description": "Number of problems contributing to the metric.",
+          "dataType": "sc:Integer",
+          "source": {
+            "extract": {
+              "column": "num_problems"
+            },
+            "fileObject": {
+              "@id": "aggregate_metrics-files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "aggregate_metrics/num_certificates",
+          "name": "num_certificates",
+          "description": "Number of certificates contributing to the metric.",
+          "dataType": "sc:Integer",
+          "source": {
+            "extract": {
+              "column": "num_certificates"
+            },
+            "fileObject": {
+              "@id": "aggregate_metrics-files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "aggregate_metrics/precision",
+          "name": "precision",
+          "description": "Precision.",
+          "dataType": "sc:Float",
+          "source": {
+            "extract": {
+              "column": "precision"
+            },
+            "fileObject": {
+              "@id": "aggregate_metrics-files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "aggregate_metrics/recall",
+          "name": "recall",
+          "description": "Recall.",
+          "dataType": "sc:Float",
+          "source": {
+            "extract": {
+              "column": "recall"
+            },
+            "fileObject": {
+              "@id": "aggregate_metrics-files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "aggregate_metrics/f1",
+          "name": "f1",
+          "description": "F1 score.",
+          "dataType": "sc:Float",
+          "source": {
+            "extract": {
+              "column": "f1"
+            },
+            "fileObject": {
+              "@id": "aggregate_metrics-files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "aggregate_metrics/coverage",
+          "name": "coverage",
+          "description": "Definitive coverage for this slice.",
+          "dataType": "sc:Float",
+          "source": {
+            "extract": {
+              "column": "coverage"
+            },
+            "fileObject": {
+              "@id": "aggregate_metrics-files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "aggregate_metrics/coverage_adjusted_f1",
+          "name": "coverage_adjusted_f1",
+          "description": "Convenience metric combining F1 and coverage.",
+          "dataType": "sc:Float",
+          "source": {
+            "extract": {
+              "column": "coverage_adjusted_f1"
+            },
+            "fileObject": {
+              "@id": "aggregate_metrics-files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "aggregate_metrics/lower_bound_f1_all_unresolved_negative",
+          "name": "lower_bound_f1_all_unresolved_negative",
+          "description": "Lower bound if all unresolved cases are scored as negatives.",
+          "dataType": "sc:Float",
+          "source": {
+            "extract": {
+              "column": "lower_bound_f1_all_unresolved_negative"
+            },
+            "fileObject": {
+              "@id": "aggregate_metrics-files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "aggregate_metrics/mean_num_premises",
+          "name": "mean_num_premises",
+          "description": "Average number of premises in this slice.",
+          "dataType": "sc:Float",
+          "source": {
+            "extract": {
+              "column": "mean_num_premises"
+            },
+            "fileObject": {
+              "@id": "aggregate_metrics-files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "aggregate_metrics/mean_api_calls_per_problem",
+          "name": "mean_api_calls_per_problem",
+          "description": "Mean run count or API calls per problem.",
+          "dataType": "sc:Float",
+          "source": {
+            "extract": {
+              "column": "mean_api_calls_per_problem"
+            },
+            "fileObject": {
+              "@id": "aggregate_metrics-files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "aggregate_metrics/estimated_cost_usd_per_problem",
+          "name": "estimated_cost_usd_per_problem",
+          "description": "Estimated cost per problem under the evaluated protocol.",
+          "dataType": "sc:Float",
+          "source": {
+            "extract": {
+              "column": "estimated_cost_usd_per_problem"
+            },
+            "fileObject": {
+              "@id": "aggregate_metrics-files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "aggregate_metrics/ci95_low",
+          "name": "ci95_low",
+          "description": "Lower bound of 95% confidence interval.",
+          "dataType": "sc:Float",
+          "source": {
+            "extract": {
+              "column": "ci95_low"
+            },
+            "fileObject": {
+              "@id": "aggregate_metrics-files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "aggregate_metrics/ci95_high",
+          "name": "ci95_high",
+          "description": "Upper bound of 95% confidence interval.",
+          "dataType": "sc:Float",
+          "source": {
+            "extract": {
+              "column": "ci95_high"
+            },
+            "fileObject": {
+              "@id": "aggregate_metrics-files"
+            }
+          }
+        },
+        {
+          "@type": "cr:Field",
+          "@id": "aggregate_metrics/notes",
+          "name": "notes",
+          "description": "Optional notes.",
+          "dataType": "sc:Text",
+          "source": {
+            "extract": {
+              "column": "notes"
+            },
+            "fileObject": {
+              "@id": "aggregate_metrics-files"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "rai:dataUseCases": [
+    "Step-level premise-dependency evaluation",
+    "RAWR analysis",
+    "coverage-aware reasoning evaluation"
+  ],
+  "rai:dataLimitations": [
+    "Primary claims target formal or semi-formal reasoning traces with recoverable canonical structure.",
+    "Coverage depends on canonicalization and alignment quality.",
+    "Universal scoring conventions are direct and transitive only; extensions are benchmark-specific.",
+    "Human audit uses a primary author annotator with an independent non-author second annotator; inter-annotator agreement is reported in the accompanying paper (Appendix B) and supplementary audit manifests.",
+    "One greedy-decoded trace per problem-probe pair; stochastic variation is not captured.",
+    "Licensing has three distinct layers. (1) Upstream source-benchmark corpora: to the best of our knowledge at release time, ProntoQA (Saparov & He, 2023; https://github.com/asaparov/prontoqa) is distributed under Apache-2.0 and ProofWriter (Tafjord et al., 2021; https://allenai.org/data/proofwriter) is distributed under CC BY 4.0; the data/benchmarks/ table conservatively records upstream_license_status='unknown' because this IGA-Bench release does not redistribute upstream benchmark text. Users who also consume the upstream corpora must follow the upstream license terms published at those URLs. (2) The derived IGA-Bench audit dataset distributed here (this file and all sibling Parquet tables) is CC0 1.0, matching the top-level 'license' field. (3) The accompanying code release (evaluation suite) is distributed under the MIT License (see repository LICENSE)."
+  ],
+  "rai:syntheticDataDescription": "Yes. ProntoQA problems are fully synthetic. ProofWriter problems are semi-synthetic (natural-language templates over generated logical structures). All audit certificates are machine-generated via the IGA-Bench pipeline.",
+  "conformsTo": [
+    "http://mlcommons.org/croissant/1.1",
+    "http://mlcommons.org/croissant/RAI/1.0"
+  ],
+  "datePublished": "2026"
+}

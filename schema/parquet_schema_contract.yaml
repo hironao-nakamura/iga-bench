@@ -1,0 +1,832 @@
+dataset:
+  name: IGA-Bench Core
+  version: 1.1.0
+  description: Derived audit dataset for step-level premise dependency in LLM chain-of-thought
+    under controlled interventions.
+  primary_release_object: true
+  release_dataset_count: 1
+  canonical_storage: partitioned_parquet
+  companion_artifacts:
+  - name: IGA-Bench Raw
+    included_in_core_release: false
+  - name: iga-suite
+    included_in_core_release: false
+    companion_code_artifact: true
+  universal_dependency_conventions:
+  - direct
+  - transitive
+  extension_dependency_conventions:
+  - predicate_determining
+  - alternate_proof_tolerant
+  text_policy:
+    default_core_behavior: reference_upstream_inputs_do_not_claim_as_dataset
+    benchmark_text_may_be_mirrored_if_license_verified: true
+    raw_model_outputs_in_core_by_default: false
+  partitioning_principles:
+  - Partition by benchmark_id and split for benchmark-level tables.
+  - Partition by benchmark_id, model_family, and config_id for high-volume run/certificate
+    tables.
+  - Target 64-256 MB Parquet shards in the final release.
+tables:
+  benchmarks:
+    path: data/benchmarks/part-*.parquet
+    primary_key:
+    - benchmark_id
+    partition_by: []
+    description: One row per upstream benchmark family referenced by IGA-Bench.
+    columns:
+    - name: benchmark_id
+      type: string
+      nullable: false
+      description: Stable benchmark key, e.g. prontoqa, proofwriter.
+    - name: benchmark_name
+      type: string
+      nullable: false
+      description: Human-readable benchmark name.
+    - name: benchmark_version
+      type: string
+      nullable: false
+      description: Upstream benchmark version or snapshot identifier.
+    - name: benchmark_family
+      type: string
+      nullable: false
+      description: formal, semi_formal, natural_language, synthetic, etc.
+    - name: source_url
+      type: string
+      nullable: true
+      description: Canonical upstream landing page or citation URL.
+    - name: upstream_license_status
+      type: string
+      nullable: false
+      description: verified, restricted, unknown, or not_applicable.
+    - name: text_in_core_default
+      type: bool
+      nullable: false
+      description: Whether benchmark-native text is included in the core dataset by
+        default.
+    - name: gold_proof_available
+      type: bool
+      nullable: false
+      description: Whether benchmark proof structure is available or derivable.
+    - name: supports_extension_modes
+      type: bool
+      nullable: false
+      description: Whether benchmark-specific scoring extensions are defined.
+    - name: notes
+      type: string
+      nullable: true
+      description: Suitability notes and caveats.
+  models:
+    path: data/models/part-*.parquet
+    primary_key:
+    - model_id
+    partition_by: []
+    description: One row per evaluated model snapshot/configuration.
+    columns:
+    - name: model_id
+      type: string
+      nullable: false
+      description: Stable model key.
+    - name: provider
+      type: string
+      nullable: false
+      description: Model provider or open-weight source.
+    - name: model_family
+      type: string
+      nullable: false
+      description: Family key used in comparisons.
+    - name: model_name
+      type: string
+      nullable: false
+      description: Public model name.
+    - name: model_snapshot
+      type: string
+      nullable: true
+      description: Version date or snapshot tag if known.
+    - name: access_type
+      type: string
+      nullable: false
+      description: api, open_weight, hosted_checkpoint, etc.
+    - name: default_trace_mode
+      type: string
+      nullable: false
+      description: forced_step or free_form.
+    - name: notes
+      type: string
+      nullable: true
+      description: Model-specific caveats relevant to normalization or probing.
+  problems:
+    path: data/problems/benchmark_id={benchmark_id}/split={split}/part-*.parquet
+    primary_key:
+    - dataset_problem_id
+    partition_by:
+    - benchmark_id
+    - split
+    description: One row per problem instance referenced in the derived audit dataset.
+    columns:
+    - name: dataset_problem_id
+      type: string
+      nullable: false
+      description: Stable globally unique problem ID inside IGA-Bench.
+    - name: benchmark_id
+      type: string
+      nullable: false
+      description: Foreign key to benchmarks.benchmark_id.
+    - name: benchmark_problem_id
+      type: string
+      nullable: false
+      description: Original upstream problem ID if available.
+    - name: split
+      type: string
+      nullable: false
+      description: train, dev, test, analysis, stress, holdout, etc.
+    - name: release_tier
+      type: string
+      nullable: false
+      description: public_core or private_holdout.
+    - name: source_record_ref
+      type: string
+      nullable: false
+      description: Opaque upstream record locator or import key.
+    - name: benchmark_text_in_core
+      type: bool
+      nullable: false
+      description: Whether benchmark-native problem text is included in the core release
+        for this row.
+    - name: gold_answer
+      type: string
+      nullable: true
+      description: Gold final answer in benchmark-native form if releasable.
+    - name: answer_type
+      type: string
+      nullable: false
+      description: boolean, categorical, free_form.
+    - name: num_premises
+      type: int32
+      nullable: false
+      description: Number of input premises.
+    - name: num_gold_steps
+      type: int32
+      nullable: true
+      description: Number of gold intermediate steps if defined.
+    - name: max_gold_depth
+      type: int32
+      nullable: true
+      description: Longest proof depth among valid proofs.
+    - name: difficulty_bin
+      type: string
+      nullable: true
+      description: Benchmark-specific difficulty bucket.
+    - name: source_hash
+      type: string
+      nullable: true
+      description: Hash of the canonical source record or import payload.
+    - name: notes
+      type: string
+      nullable: true
+      description: Free-text notes.
+  proof_nodes:
+    path: data/proof_nodes/benchmark_id={benchmark_id}/part-*.parquet
+    primary_key:
+    - proof_node_id
+    partition_by:
+    - benchmark_id
+    description: Node list for one or more proof graphs per problem, expressed in
+      canonical audit form.
+    columns:
+    - name: proof_node_id
+      type: string
+      nullable: false
+      description: Stable globally unique proof node ID.
+    - name: dataset_problem_id
+      type: string
+      nullable: false
+      description: Foreign key to problems.dataset_problem_id.
+    - name: proof_graph_id
+      type: string
+      nullable: false
+      description: Valid-proof graph ID; multiple graphs allowed per problem.
+    - name: node_role
+      type: string
+      nullable: false
+      description: premise, intermediate_step, final_answer.
+    - name: node_index
+      type: int32
+      nullable: true
+      description: Canonical within-graph order for display.
+    - name: source_node_ref
+      type: string
+      nullable: true
+      description: Opaque reference back to the benchmark-native node text.
+    - name: canonical_form
+      type: string
+      nullable: true
+      description: Canonical proposition form if available.
+    - name: canonical_type
+      type: string
+      nullable: true
+      description: is, subtype, break, free_form, etc.
+    - name: extension_group
+      type: string
+      nullable: true
+      description: Identifier for alternate-proof or benchmark-specific grouping.
+    - name: notes
+      type: string
+      nullable: true
+      description: Optional annotation notes.
+  proof_edges:
+    path: data/proof_edges/benchmark_id={benchmark_id}/part-*.parquet
+    primary_key:
+    - proof_edge_id
+    partition_by:
+    - benchmark_id
+    description: Direct dependency edges inside valid proof graphs. Transitive relations
+      are derived, not stored as primary edges.
+    columns:
+    - name: proof_edge_id
+      type: string
+      nullable: false
+      description: Stable edge ID.
+    - name: dataset_problem_id
+      type: string
+      nullable: false
+      description: Foreign key to problems.dataset_problem_id.
+    - name: proof_graph_id
+      type: string
+      nullable: false
+      description: Foreign key to proof graph instance.
+    - name: src_proof_node_id
+      type: string
+      nullable: false
+      description: Source node ID.
+    - name: dst_proof_node_id
+      type: string
+      nullable: false
+      description: Destination node ID.
+    - name: edge_role
+      type: string
+      nullable: false
+      description: direct_dependency or benchmark_specific_extension_edge.
+    - name: notes
+      type: string
+      nullable: true
+      description: Optional notes.
+  runs:
+    path: data/runs/benchmark_id={benchmark_id}/model_family={model_family}/part-*.parquet
+    primary_key:
+    - run_id
+    partition_by:
+    - benchmark_id
+    - model_family
+    description: One row per model execution.
+    columns:
+    - name: run_id
+      type: string
+      nullable: false
+      description: Stable run identifier.
+    - name: dataset_problem_id
+      type: string
+      nullable: false
+      description: Foreign key to problems.dataset_problem_id.
+    - name: model_id
+      type: string
+      nullable: false
+      description: Foreign key to models.model_id.
+    - name: model_family
+      type: string
+      nullable: false
+      description: Denormalized family key for partitioning.
+    - name: config_id
+      type: string
+      nullable: false
+      description: Prompting / decoding configuration key.
+    - name: trace_mode
+      type: string
+      nullable: false
+      description: forced_step or free_form.
+    - name: probe_bundle_id
+      type: string
+      nullable: false
+      description: Identifier for the probe set used.
+    - name: repetition_index
+      type: int32
+      nullable: false
+      description: Repeat index within a repeated-run protocol.
+    - name: source_response_ref
+      type: string
+      nullable: true
+      description: Opaque reference to raw response in companion artifact or secure
+        store.
+    - name: raw_output_in_companion
+      type: bool
+      nullable: false
+      description: Whether the verbatim output exists outside the core dataset.
+    - name: final_answer
+      type: string
+      nullable: true
+      description: Final answer extracted from the run if available.
+    - name: final_answer_correct
+      type: bool
+      nullable: true
+      description: Whether the final answer is correct under benchmark scoring.
+    - name: notes
+      type: string
+      nullable: true
+      description: Optional notes.
+  probes:
+    path: data/probes/benchmark_id={benchmark_id}/part-*.parquet
+    primary_key:
+    - probe_id
+    partition_by:
+    - benchmark_id
+    description: One row per generated intervention probe specification.
+    columns:
+    - name: probe_id
+      type: string
+      nullable: false
+      description: Stable probe identifier.
+    - name: dataset_problem_id
+      type: string
+      nullable: false
+      description: Foreign key to problems.dataset_problem_id.
+    - name: target_premise_ref
+      type: string
+      nullable: false
+      description: Reference to the target premise node or upstream premise key.
+    - name: probe_type
+      type: string
+      nullable: false
+      description: semantic_substitution, local_substitution, surface_control, null_probe,
+        etc.
+    - name: intervention_scope
+      type: string
+      nullable: false
+      description: consistent, local, global, control.
+    - name: render_rule_id
+      type: string
+      nullable: true
+      description: Transformation rule identifier.
+    - name: rendered_probe_in_companion
+      type: bool
+      nullable: false
+      description: Whether full rendered probe text exists outside the core dataset.
+    - name: semantic_target_ref
+      type: string
+      nullable: true
+      description: Which predicate/entity/relation was targeted.
+    - name: notes
+      type: string
+      nullable: true
+      description: Optional notes.
+  trace_steps:
+    path: data/trace_steps/benchmark_id={benchmark_id}/model_family={model_family}/part-*.parquet
+    primary_key:
+    - trace_step_id
+    partition_by:
+    - benchmark_id
+    - model_family
+    description: Canonicalized step annotations for each run. Verbatim step text is
+      referenced rather than required in core.
+    columns:
+    - name: trace_step_id
+      type: string
+      nullable: false
+      description: Stable step identifier.
+    - name: run_id
+      type: string
+      nullable: false
+      description: Foreign key to runs.run_id.
+    - name: step_index
+      type: int32
+      nullable: false
+      description: 1-indexed step number in the emitted trace.
+    - name: raw_step_ref
+      type: string
+      nullable: true
+      description: Opaque reference to the verbatim step text in companion storage.
+    - name: raw_step_sha256
+      type: string
+      nullable: true
+      description: Hash of the verbatim step text if available.
+    - name: parse_status
+      type: string
+      nullable: false
+      description: OK, UNPARSEABLE, BREAK_TOKENIZED, etc.
+    - name: canonical_form
+      type: string
+      nullable: true
+      description: Canonical proposition or canonical break token.
+    - name: canonical_type
+      type: string
+      nullable: true
+      description: is, subtype, break, free_form, etc.
+    - name: emits_break_token
+      type: bool
+      nullable: false
+      description: Whether canonicalization produced a break/meta token.
+    - name: break_token_type
+      type: string
+      nullable: true
+      description: Reason category for break/meta token if emitted.
+    - name: notes
+      type: string
+      nullable: true
+      description: Optional notes.
+  step_alignments:
+    path: data/step_alignments/benchmark_id={benchmark_id}/model_family={model_family}/part-*.parquet
+    primary_key:
+    - alignment_id
+    partition_by:
+    - benchmark_id
+    - model_family
+    description: Alignment records between original and probed traces.
+    columns:
+    - name: alignment_id
+      type: string
+      nullable: false
+      description: Stable alignment identifier.
+    - name: dataset_problem_id
+      type: string
+      nullable: false
+      description: Foreign key to problems.dataset_problem_id.
+    - name: original_run_id
+      type: string
+      nullable: false
+      description: Original run identifier.
+    - name: probed_run_id
+      type: string
+      nullable: false
+      description: Probe run identifier.
+    - name: original_trace_step_id
+      type: string
+      nullable: true
+      description: Aligned original step.
+    - name: probed_trace_step_id
+      type: string
+      nullable: true
+      description: Aligned probed step.
+    - name: alignment_status
+      type: string
+      nullable: false
+      description: MATCHED, MISSING, EXTRA, UNSURE.
+    - name: alignment_method
+      type: string
+      nullable: false
+      description: step_id, canonical_match, hybrid, etc.
+    - name: alignment_confidence
+      type: float64
+      nullable: true
+      description: Numeric confidence if produced.
+    - name: notes
+      type: string
+      nullable: true
+      description: Optional notes.
+  audit_certificates:
+    path: data/audit_certificates/benchmark_id={benchmark_id}/model_family={model_family}/part-*.parquet
+    primary_key:
+    - certificate_id
+    partition_by:
+    - benchmark_id
+    - model_family
+    description: 'The primary analytic table: one row per audited (step, premise,
+      probe configuration) pair.'
+    columns:
+    - name: certificate_id
+      type: string
+      nullable: false
+      description: Stable certificate identifier.
+    - name: dataset_problem_id
+      type: string
+      nullable: false
+      description: Foreign key to problems.dataset_problem_id.
+    - name: model_id
+      type: string
+      nullable: false
+      description: Foreign key to models.model_id.
+    - name: model_family
+      type: string
+      nullable: false
+      description: Denormalized family key for partitioning.
+    - name: config_id
+      type: string
+      nullable: false
+      description: Evaluation configuration key.
+    - name: dependency_mode_scored
+      type: string
+      nullable: false
+      description: direct, transitive, or named benchmark-specific extension.
+    - name: probe_id
+      type: string
+      nullable: false
+      description: Foreign key to probes.probe_id.
+    - name: premise_canonical_type
+      type: string
+      nullable: true
+      description: Canonical type of the target premise (is, subtype, not_subtype, ...).
+    - name: target_premise_ref
+      type: string
+      nullable: false
+      description: Target premise reference.
+    - name: original_run_id
+      type: string
+      nullable: false
+      description: Original run identifier.
+    - name: probed_run_id
+      type: string
+      nullable: false
+      description: Probe run identifier.
+    - name: original_trace_step_id
+      type: string
+      nullable: true
+      description: Aligned original step identifier.
+    - name: probed_trace_step_id
+      type: string
+      nullable: true
+      description: Aligned probed step identifier.
+    - name: probe_type
+      type: string
+      nullable: false
+      description: semantic_substitution, local_substitution, surface_control, null_probe,
+        etc.
+    - name: verdict_type
+      type: string
+      nullable: false
+      description: GROUNDED, INSENSITIVE, INPUT_SENSITIVE, UNSTABLE, UNPARSEABLE,
+        BREAK_GROUNDED, etc.
+    - name: explicit_premise_citation
+      type: bool
+      nullable: false
+      description: Whether the step explicitly cites the target premise.
+    - name: semantic_changed
+      type: bool
+      nullable: true
+      description: Whether the canonicalized conclusion changed under semantic intervention.
+    - name: control_changed
+      type: bool
+      nullable: true
+      description: Whether the canonicalized conclusion changed under control intervention.
+    - name: consistent_changed
+      type: bool
+      nullable: true
+      description: Delta under consistent semantic substitution.
+    - name: local_changed
+      type: bool
+      nullable: true
+      description: Delta under local semantic substitution.
+    - name: surface_changed
+      type: bool
+      nullable: true
+      description: Delta under surface-control probe.
+    - name: null_changed
+      type: bool
+      nullable: true
+      description: Delta under null-control probe.
+    - name: verdict_rule
+      type: string
+      nullable: true
+      description: Rule ID used to produce the verdict.
+    - name: evidence_mode
+      type: string
+      nullable: true
+      description: Which evidence stream supported the verdict (consistent_only, local_first_change, both, none).
+    - name: evidence_stream
+      type: string
+      nullable: true
+      description: rule_style, fact_style_entity, or extension-specific stream key.
+    - name: parse_ok
+      type: bool
+      nullable: false
+      description: Whether the relevant steps were parseable into the canonical representation.
+    - name: alignment_ok
+      type: bool
+      nullable: false
+      description: Whether step alignment was definitive.
+    - name: gold_dependency_label
+      type: string
+      nullable: true
+      description: positive, negative, unresolved under the scored dependency mode.
+    - name: unresolved_reason
+      type: string
+      nullable: true
+      description: parse_failure, alignment_failure, unsupported_extension, etc.
+    - name: canonical_original
+      type: string
+      nullable: true
+      description: Canonical form of the original aligned step.
+    - name: canonical_probed
+      type: string
+      nullable: true
+      description: Canonical form of the probed aligned step.
+    - name: canonical_consistent
+      type: string
+      nullable: true
+      description: Canonical form under consistent semantic probe.
+    - name: canonical_local
+      type: string
+      nullable: true
+      description: Canonical form under local semantic probe.
+    - name: canonical_entity
+      type: string
+      nullable: true
+      description: Canonical form under entity-substitution probe.
+    - name: canonical_surface
+      type: string
+      nullable: true
+      description: Canonical form under surface control probe.
+    - name: canonical_null
+      type: string
+      nullable: true
+      description: Canonical form under null control probe.
+    - name: certificate_sha256
+      type: string
+      nullable: true
+      description: Hash of the certificate payload.
+    - name: notes
+      type: string
+      nullable: true
+      description: Optional notes.
+  run_summaries:
+    path: data/run_summaries/benchmark_id={benchmark_id}/model_family={model_family}/part-*.parquet
+    primary_key:
+    - summary_id
+    partition_by:
+    - benchmark_id
+    - model_family
+    description: Problem-level summaries derived from audit certificates and final
+      answers.
+    columns:
+    - name: summary_id
+      type: string
+      nullable: false
+      description: Stable summary identifier.
+    - name: dataset_problem_id
+      type: string
+      nullable: false
+      description: Foreign key to problems.dataset_problem_id.
+    - name: model_id
+      type: string
+      nullable: false
+      description: Foreign key to models.model_id.
+    - name: model_family
+      type: string
+      nullable: false
+      description: Denormalized family key.
+    - name: config_id
+      type: string
+      nullable: false
+      description: Evaluation configuration key.
+    - name: final_answer_correct
+      type: bool
+      nullable: true
+      description: Whether the final answer was correct.
+    - name: rawr_direct
+      type: bool
+      nullable: true
+      description: RAWR under direct scoring.
+    - name: rawr_transitive
+      type: bool
+      nullable: true
+      description: RAWR under transitive scoring.
+    - name: definitive_coverage
+      type: float64
+      nullable: false
+      description: Fraction of certificates for this run with definitive verdicts.
+    - name: parse_coverage
+      type: float64
+      nullable: false
+      description: Fraction of relevant steps parseable for this run.
+    - name: alignment_coverage
+      type: float64
+      nullable: false
+      description: Fraction of relevant alignments successful for this run.
+    - name: num_certificates
+      type: int32
+      nullable: false
+      description: Number of emitted certificates.
+    - name: num_unparseable
+      type: int32
+      nullable: false
+      description: Number of UNPARSEABLE certificates.
+    - name: num_misrepresentation
+      type: int32
+      nullable: false
+      description: Number of misrepresentation cases under the chosen policy.
+    - name: notes
+      type: string
+      nullable: true
+      description: Optional notes.
+  aggregate_metrics:
+    path: data/aggregate_metrics/part-*.parquet
+    primary_key:
+    - metric_id
+    partition_by: []
+    description: Aggregated benchmark/model/configuration metrics released with the
+      dataset.
+    columns:
+    - name: metric_id
+      type: string
+      nullable: false
+      description: Stable metric row identifier.
+    - name: benchmark_id
+      type: string
+      nullable: false
+      description: Benchmark key.
+    - name: split
+      type: string
+      nullable: false
+      description: Split key.
+    - name: model_family
+      type: string
+      nullable: false
+      description: Model family.
+    - name: model_id
+      type: string
+      nullable: true
+      description: Specific model if metrics are model-specific.
+    - name: config_id
+      type: string
+      nullable: false
+      description: Evaluation configuration key.
+    - name: dependency_mode
+      type: string
+      nullable: false
+      description: direct, transitive, or benchmark-specific extension.
+    - name: metric_scope
+      type: string
+      nullable: false
+      description: all, predicate_determining, benchmark_specific_extension, etc.
+    - name: baseline_name
+      type: string
+      nullable: true
+      description: If this row is a baseline comparison, its name.
+    - name: voting_k
+      type: int32
+      nullable: true
+      description: Repeat-run majority vote count if applicable.
+    - name: num_problems
+      type: int32
+      nullable: false
+      description: Number of problems contributing to the metric.
+    - name: num_certificates
+      type: int32
+      nullable: false
+      description: Number of certificates contributing to the metric.
+    - name: precision
+      type: float64
+      nullable: true
+      description: Precision.
+    - name: recall
+      type: float64
+      nullable: true
+      description: Recall.
+    - name: f1
+      type: float64
+      nullable: true
+      description: F1 score.
+    - name: coverage
+      type: float64
+      nullable: false
+      description: Definitive coverage for this slice.
+    - name: coverage_adjusted_f1
+      type: float64
+      nullable: true
+      description: Convenience metric combining F1 and coverage.
+    - name: lower_bound_f1_all_unresolved_negative
+      type: float64
+      nullable: true
+      description: Lower bound if all unresolved cases are scored as negatives.
+    - name: mean_num_premises
+      type: float64
+      nullable: true
+      description: Average number of premises in this slice.
+    - name: mean_api_calls_per_problem
+      type: float64
+      nullable: true
+      description: Mean run count or API calls per problem.
+    - name: estimated_cost_usd_per_problem
+      type: float64
+      nullable: true
+      description: Estimated cost per problem under the evaluated protocol.
+    - name: ci95_low
+      type: float64
+      nullable: true
+      description: Lower bound of 95% confidence interval.
+    - name: ci95_high
+      type: float64
+      nullable: true
+      description: Upper bound of 95% confidence interval.
+    - name: notes
+      type: string
+      nullable: true
+      description: Optional notes.
+    - name: metric_status
+      type: string
+      nullable: true
+      description: |
+        Semantic status of the row's classification metrics.  'defined'
+        when the slice has at least one gold-positive or predicted-positive
+        certificate; 'undefined:no_gold_positive_pairs' when
+        precision/recall/F1 are mathematically undefined (e.g. ProofWriter
+        predicate_determining rows, which contain no gold-positive cases by
+        construction).  Nullable for backward-compatibility with v1.0
+        aggregate_metrics rows written before this column was introduced.

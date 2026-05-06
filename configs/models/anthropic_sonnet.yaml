@@ -1,0 +1,11 @@
+model:
+  provider: anthropic
+  api_key_env: ANTHROPIC_API_KEY
+  model_id: anthropic_claude_sonnet_4_6
+  provider_name: anthropic
+  model_family: anthropic
+  model_name: claude-sonnet-4-6
+  access_type: api
+  trace_mode: forced_step_atomic_v2
+  temperature: 0.0
+  max_tokens: 1200

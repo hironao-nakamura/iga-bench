@@ -1,0 +1,14 @@
+model:
+  provider: openai_compatible
+  api_key_env: OPENAI_COMPATIBLE_API_KEY
+  base_url_env: OPENAI_COMPATIBLE_BASE_URL
+  model_id: openrouter_qwen3_next_80b_a3b_instruct
+  provider_name: openrouter_openai_compat
+  model_family: openweight
+  model_name: qwen/qwen3-next-80b-a3b-instruct
+  model_snapshot: null
+  access_type: api
+  trace_mode: forced_step
+  temperature: 0.0
+  max_tokens: 1200
+  notes: OpenRouter OpenAI-compatible endpoint for Qwen3-Next-80B-A3B-Instruct.

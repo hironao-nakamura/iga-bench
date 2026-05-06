@@ -1,0 +1,54 @@
+schema_path: schema/parquet_schema_contract.yaml
+output_root: outputs/eval_runs/proofwriter300_openrouter_qwen3_next_80b_a3b_instruct
+companion_root: outputs/eval_runs/proofwriter300_openrouter_qwen3_next_80b_a3b_instruct_companion
+raw_companion: true
+benchmark:
+  loader: proofwriter_normalized_jsonl
+  benchmark_id: proofwriter_cwa_d3_is_300
+  benchmark_name: ProofWriter CWA Depth-3 Is-only (300)
+  benchmark_version: cwa-d3-is-300-v1
+  benchmark_family: semi_formal
+  source_url: https://allenai.org/data/proofwriter
+  upstream_license_status: CC BY 4.0
+  input_path: examples/current_release/proofwriter_cwa_d3_is_300.jsonl
+  split: analysis
+  release_tier: public_core
+  include_benchmark_text_in_core: false
+  supports_extension_modes: true
+  notes: ProofWriter CWA depth-3 subset restricted to unary is-relation worlds for
+    canonicalization stability. 300-problem expanded set (superset of 100).
+model:
+  provider: openai_compatible
+  api_key_env: OPENAI_COMPATIBLE_API_KEY
+  model_id: proofwriter300_openrouter_qwen3_next_80b_a3b_instruct
+  provider_name: openrouter_openai_compat
+  model_family: openweight
+  model_name: qwen/qwen3-next-80b-a3b-instruct
+  model_snapshot: null
+  access_type: api
+  trace_mode: forced_step_atomic_v2
+  temperature: 0.0
+  max_tokens: 1200
+  notes: OpenRouter OpenAI-compatible endpoint run (Qwen3-Next-80B-A3B-Instruct).
+  base_url_env: OPENAI_COMPATIBLE_BASE_URL
+run:
+  config_id: proofwriter300_openrouter_qwen3_next_80b_a3b_instruct_v1
+  max_problems: 300
+  repetitions: 1
+  probe_bundle_id: semantic_local_surface_null_entity_v1
+  probe_types:
+  - semantic_substitution
+  - local_substitution
+  - surface_control
+  - null_probe
+  - entity_substitution
+  dependency_modes:
+  - direct
+  - transitive
+  include_extension_scope_predicate_determining: true
+  prompt_mode: forced_step_atomic_v2
+  null_probe_enabled: true
+  self_consistency:
+    enabled: false
+    samples: 5
+    temperature: 0.7

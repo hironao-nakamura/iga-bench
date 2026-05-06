@@ -1,0 +1,48 @@
+schema_path: schema/parquet_schema_contract.yaml
+output_root: outputs/quickcheck_openai_3p
+companion_root: outputs/quickcheck_openai_3p_companion
+raw_companion: true
+
+benchmark:
+  loader: generic_jsonl
+  benchmark_id: prontoqa_iclr50
+  benchmark_name: ProntoQA (ICLR WS bootstrap)
+  benchmark_version: iclr-ws-2026-bootstrap
+  benchmark_family: synthetic_formal
+  source_url: https://openreview.net/forum?id=qFVVBzXxR2V
+  upstream_license_status: Apache-2.0
+  input_path: examples/tiny/prontoqa_tiny.jsonl
+  split: analysis
+  release_tier: public_core
+  include_benchmark_text_in_core: false
+  supports_extension_modes: true
+  notes: Quick check test - 3 problems, gpt-4o
+
+model:
+  provider: openai
+  api_key_env: OPENAI_API_KEY
+  model_id: openai_gpt4o_quickcheck
+  provider_name: openai
+  model_family: openai
+  model_name: gpt-4o
+  model_snapshot: null
+  access_type: api
+  trace_mode: forced_step
+  temperature: 0.0
+  max_tokens: 1200
+  notes: Quick check test run
+
+run:
+  config_id: quickcheck_forcedstep_v1
+  max_problems: 3
+  repetitions: 1
+  probe_bundle_id: semantic_local_surface_null_v1
+  probe_types: [semantic_substitution, local_substitution, surface_control, null_probe]
+  dependency_modes: [direct, transitive]
+  include_extension_scope_predicate_determining: true
+  prompt_mode: forced_step
+  null_probe_enabled: true
+  self_consistency:
+    enabled: false
+    samples: 5
+    temperature: 0.7

@@ -1,0 +1,3 @@
+configs:
+- prontoqa_mock.yaml
+- proofwriter_mock.yaml

@@ -1,0 +1,7 @@
+configs:
+- prontoqa_full_eval_openai.yaml
+- prontoqa_full_eval_anthropic.yaml
+- prontoqa_full_eval_qwen3_next_80b_a3b_instruct.yaml
+- proofwriter300_openai.yaml
+- proofwriter300_anthropic.yaml
+- proofwriter300_openrouter_qwen3_next_80b_a3b_instruct.yaml

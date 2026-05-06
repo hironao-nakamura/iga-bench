@@ -1,0 +1,11 @@
+model:
+  provider: openai
+  api_key_env: OPENAI_API_KEY
+  model_id: openai_gpt4o
+  provider_name: openai
+  model_family: openai
+  model_name: gpt-4o
+  access_type: api
+  trace_mode: forced_step
+  temperature: 0.0
+  max_tokens: 1200
